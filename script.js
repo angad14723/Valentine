@@ -44,9 +44,35 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
+// Touch support for mobile - move button when touched
 noBtn.addEventListener('touchstart', (e) => {
     e.preventDefault();
     moveNoButton();
+});
+
+// Track touch movement near the No button (for mobile)
+document.addEventListener('touchmove', (e) => {
+    if (!noBtn || questionContent.classList.contains('hidden')) return;
+
+    const touch = e.touches[0];
+    const btnRect = noBtn.getBoundingClientRect();
+    const touchX = touch.clientX;
+    const touchY = touch.clientY;
+
+    // Calculate distance from touch to button center
+    const btnCenterX = btnRect.left + btnRect.width / 2;
+    const btnCenterY = btnRect.top + btnRect.height / 2;
+    const distance = Math.sqrt(
+        Math.pow(touchX - btnCenterX, 2) +
+        Math.pow(touchY - btnCenterY, 2)
+    );
+
+    // If touch is within 80px of the button, move it away
+    const now = Date.now();
+    if (distance < 80 && now - lastMoveTime > moveDelay) {
+        lastMoveTime = now;
+        moveNoButton();
+    }
 });
 
 function moveNoButton() {
