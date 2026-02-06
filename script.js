@@ -50,6 +50,31 @@ noBtn.addEventListener('touchstart', (e) => {
     moveNoButton();
 });
 
+// Track touch start near the No button (for mobile taps)
+document.addEventListener('touchstart', (e) => {
+    if (!noBtn || questionContent.classList.contains('hidden')) return;
+
+    const touch = e.touches[0];
+    const btnRect = noBtn.getBoundingClientRect();
+    const touchX = touch.clientX;
+    const touchY = touch.clientY;
+
+    // Calculate distance from touch to button center
+    const btnCenterX = btnRect.left + btnRect.width / 2;
+    const btnCenterY = btnRect.top + btnRect.height / 2;
+    const distance = Math.sqrt(
+        Math.pow(touchX - btnCenterX, 2) +
+        Math.pow(touchY - btnCenterY, 2)
+    );
+
+    // If touch is within 100px of the button, move it away
+    const now = Date.now();
+    if (distance < 100 && now - lastMoveTime > moveDelay) {
+        lastMoveTime = now;
+        moveNoButton();
+    }
+});
+
 // Track touch movement near the No button (for mobile)
 document.addEventListener('touchmove', (e) => {
     if (!noBtn || questionContent.classList.contains('hidden')) return;
