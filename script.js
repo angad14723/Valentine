@@ -27,6 +27,16 @@ if (imageUrl) {
     bgImage.classList.add('active');
     bgImageSuccess.style.backgroundImage = `url('${imageUrl}')`;
     bgImageSuccess.classList.add('active');
+
+    // Track custom image usage
+    firebase.analytics().logEvent('custom_image_used');
+}
+
+// Track personalized visits
+if (personName) {
+    firebase.analytics().logEvent('personalized_visit', {
+        name_parameter: 'used'
+    });
 }
 
 // No button hover effect - moves away from cursor
@@ -177,10 +187,19 @@ function moveNoButton() {
     const sadEmojis = ['😢', '😭', '🥺', '😔', '💔', '😿'];
     const randomEmoji = sadEmojis[Math.floor(Math.random() * sadEmojis.length)];
     noBtn.textContent = `No ${randomEmoji}`;
+
+    // Track No button dodge
+    firebase.analytics().logEvent('no_button_dodged');
 }
 
 // Yes button click - show success message
 yesBtn.addEventListener('click', () => {
+    // Track Yes click
+    firebase.analytics().logEvent('yes_clicked', {
+        has_personalized_name: !!personName,
+        has_custom_image: !!imageUrl
+    });
+
     questionContent.classList.add('hidden');
     successContent.classList.remove('hidden');
     messageElement.textContent = customMessage;
@@ -191,6 +210,12 @@ yesBtn.addEventListener('click', () => {
 
 // Share button - WhatsApp share
 shareBtn.addEventListener('click', () => {
+    // Track WhatsApp share
+    firebase.analytics().logEvent('whatsapp_share', {
+        has_personalized_name: !!personName,
+        has_custom_image: !!imageUrl
+    });
+
     const shareMessage = encodeURIComponent("I said YES! 💕 Will you be my Valentine? Click here to answer:");
     let shareUrl = window.location.origin + window.location.pathname + `?message=${encodeURIComponent(customMessage)}`;
     if (personName) {

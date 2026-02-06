@@ -10,6 +10,27 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap"
         rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyCl3MsLzsqOQcJwzox_pSjLCr4cZX5tF9I",
+            authDomain: "valentine-4f70e.firebaseapp.com",
+            projectId: "valentine-4f70e",
+            storageBucket: "valentine-4f70e.firebasestorage.app",
+            messagingSenderId: "552310635139",
+            appId: "1:552310635139:web:69da2efc19a3a1162cb9b6",
+            measurementId: "G-2K8SR8LRTL"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const analytics = firebase.analytics();
+    </script>
 </head>
 
 <body>
