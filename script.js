@@ -1,5 +1,6 @@
 // Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
+const personName = urlParams.get('name') || null;
 const customMessage = urlParams.get('message') || "I'm so happy you said yes! You've made me the happiest person in the world! 💕 Can't wait to spend this Valentine's Day with you!";
 
 // Elements
@@ -9,6 +10,13 @@ const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
 const shareBtn = document.getElementById('shareBtn');
 const messageElement = document.getElementById('customMessage');
+const mainTitle = document.getElementById('mainTitle');
+
+// Personalize the title if a name is provided
+if (personName) {
+    mainTitle.textContent = `${personName}, Will You Be My Valentine? 💕`;
+    document.title = `${personName}, Will You Be My Valentine? 💕`;
+}
 
 // No button hover effect - moves away from cursor
 let lastMoveTime = 0;
@@ -122,8 +130,11 @@ yesBtn.addEventListener('click', () => {
 // Share button - WhatsApp share
 shareBtn.addEventListener('click', () => {
     const shareMessage = encodeURIComponent("I said YES! 💕 Will you be my Valentine? Click here to answer:");
-    const shareUrl = encodeURIComponent(window.location.origin + window.location.pathname + `?message=${encodeURIComponent(customMessage)}`);
-    const whatsappUrl = `https://wa.me/?text=${shareMessage}%20${shareUrl}`;
+    let shareUrl = window.location.origin + window.location.pathname + `?message=${encodeURIComponent(customMessage)}`;
+    if (personName) {
+        shareUrl += `&name=${encodeURIComponent(personName)}`;
+    }
+    const whatsappUrl = `https://wa.me/?text=${shareMessage}%20${encodeURIComponent(shareUrl)}`;
 
     window.open(whatsappUrl, '_blank');
 });
