@@ -1,6 +1,7 @@
 // Get URL parameters
 const urlParams = new URLSearchParams(window.location.search);
 const personName = urlParams.get('name') || null;
+const imageUrl = urlParams.get('image') || null;
 const customMessage = urlParams.get('message') || "I'm so happy you said yes! You've made me the happiest person in the world! 💕 Can't wait to spend this Valentine's Day with you!";
 
 // Elements
@@ -11,11 +12,21 @@ const noBtn = document.getElementById('noBtn');
 const shareBtn = document.getElementById('shareBtn');
 const messageElement = document.getElementById('customMessage');
 const mainTitle = document.getElementById('mainTitle');
+const bgImage = document.getElementById('bgImage');
+const bgImageSuccess = document.getElementById('bgImageSuccess');
 
 // Personalize the title if a name is provided
 if (personName) {
     mainTitle.textContent = `${personName}, Will You Be My Valentine? 💕`;
     document.title = `${personName}, Will You Be My Valentine? 💕`;
+}
+
+// Set background image if provided
+if (imageUrl) {
+    bgImage.style.backgroundImage = `url('${imageUrl}')`;
+    bgImage.classList.add('active');
+    bgImageSuccess.style.backgroundImage = `url('${imageUrl}')`;
+    bgImageSuccess.classList.add('active');
 }
 
 // No button hover effect - moves away from cursor
@@ -184,6 +195,9 @@ shareBtn.addEventListener('click', () => {
     let shareUrl = window.location.origin + window.location.pathname + `?message=${encodeURIComponent(customMessage)}`;
     if (personName) {
         shareUrl += `&name=${encodeURIComponent(personName)}`;
+    }
+    if (imageUrl) {
+        shareUrl += `&image=${encodeURIComponent(imageUrl)}`;
     }
     const whatsappUrl = `https://wa.me/?text=${shareMessage}%20${encodeURIComponent(shareUrl)}`;
 
